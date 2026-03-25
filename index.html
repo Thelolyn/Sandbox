@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holiday Trip Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Holiday Trip Planner</h1>
+    <p class="subtitle">Plan your perfect getaway</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="hotels">Hotels</button>
+    <button class="tab" data-tab="activities">Activities</button>
+    <button class="tab" data-tab="restaurants">Places to Eat</button>
+  </nav>
+
+  <div class="controls">
+    <label for="status-filter">Filter by status:</label>
+    <select id="status-filter">
+      <option value="all">All</option>
+    </select>
+  </div>
+
+  <main id="card-container"></main>
+
+  <script src="app.js"></script>
+</body>
+</html>

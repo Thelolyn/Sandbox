@@ -1,0 +1,98 @@
+{
+  "hotels": [
+    {
+      "name": "Seaside Paradise Resort",
+      "image": "https://placehold.co/400x250/0891b2/white?text=Seaside+Resort",
+      "rating": 4.7,
+      "pricePerNight": "$180",
+      "location": "Beachfront, 5 min walk to town center",
+      "notes": "Includes breakfast buffet and pool access. Free cancellation until 3 days before.",
+      "link": "https://example.com/seaside-resort",
+      "status": "booked"
+    },
+    {
+      "name": "Mountain View Lodge",
+      "image": "https://placehold.co/400x250/065f46/white?text=Mountain+Lodge",
+      "rating": 4.3,
+      "pricePerNight": "$95",
+      "location": "Hillside, 15 min drive to beach",
+      "notes": "Quiet area, great views. No breakfast but kitchen available.",
+      "link": "https://example.com/mountain-lodge",
+      "status": "interested"
+    },
+    {
+      "name": "Downtown Boutique Hotel",
+      "image": "https://placehold.co/400x250/7c3aed/white?text=Boutique+Hotel",
+      "rating": 4.5,
+      "pricePerNight": "$150",
+      "location": "City center, walking distance to everything",
+      "notes": "Stylish rooms, rooftop bar. Can be noisy at night.",
+      "link": "https://example.com/boutique-hotel",
+      "status": "interested"
+    }
+  ],
+  "activities": [
+    {
+      "name": "Snorkeling Tour",
+      "image": "https://placehold.co/400x250/0284c7/white?text=Snorkeling",
+      "rating": 4.8,
+      "price": "$45/person",
+      "duration": "3 hours",
+      "notes": "Morning slot recommended for calmer waters. Book 2 days ahead.",
+      "link": "https://example.com/snorkeling-tour",
+      "status": "must-visit"
+    },
+    {
+      "name": "Old Town Walking Tour",
+      "image": "https://placehold.co/400x250/b45309/white?text=Walking+Tour",
+      "rating": 4.6,
+      "price": "$20/person",
+      "duration": "2 hours",
+      "notes": "Runs daily at 10am and 4pm. Covers history and architecture.",
+      "link": "https://example.com/walking-tour",
+      "status": "interested"
+    },
+    {
+      "name": "Sunset Sailing Cruise",
+      "image": "https://placehold.co/400x250/e11d48/white?text=Sunset+Cruise",
+      "rating": 4.9,
+      "price": "$75/person",
+      "duration": "2.5 hours",
+      "notes": "Includes drinks and snacks. Departs 5:30pm. Limited spots.",
+      "link": "https://example.com/sunset-cruise",
+      "status": "booked"
+    }
+  ],
+  "restaurants": [
+    {
+      "name": "La Trattoria",
+      "image": "https://placehold.co/400x250/dc2626/white?text=La+Trattoria",
+      "rating": 4.5,
+      "priceRange": "$$",
+      "cuisine": "Italian",
+      "notes": "Homemade pasta is excellent. Reservations required on weekends.",
+      "link": "https://example.com/la-trattoria",
+      "status": "must-visit"
+    },
+    {
+      "name": "The Fish Market",
+      "image": "https://placehold.co/400x250/0369a1/white?text=Fish+Market",
+      "rating": 4.7,
+      "priceRange": "$$$",
+      "cuisine": "Seafood",
+      "notes": "Freshest catch in town. Try the grilled octopus. Outdoor seating available.",
+      "link": "https://example.com/fish-market",
+      "status": "interested"
+    },
+    {
+      "name": "Sunrise Cafe",
+      "image": "https://placehold.co/400x250/ea580c/white?text=Sunrise+Cafe",
+      "rating": 4.2,
+      "priceRange": "$",
+      "cuisine": "Brunch & Coffee",
+      "notes": "Great for breakfast. Avocado toast and fresh juices. Opens at 7am.",
+      "link": "https://example.com/sunrise-cafe",
+      "status": "must-visit"
+    }
+  ]
+}
