@@ -164,14 +164,45 @@
       color: #1e40af;
     }
 
-    .status--must-visit {
-      background: #ffedd5;
-      color: #9a3412;
-    }
-
-    .status--visited {
+    .status--next-time {
       background: #f3f4f6;
       color: #6b7280;
+    }
+
+    /* Status Selector */
+    .status-select {
+      padding: 0.2rem 0.4rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      border: 1px solid #d4d4d4;
+      cursor: pointer;
+      flex-shrink: 0;
+      appearance: none;
+      -webkit-appearance: none;
+      background-repeat: no-repeat;
+      background-position: right 0.3rem center;
+      background-size: 0.5rem;
+      padding-right: 1rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    }
+
+    .status-select.status--interested {
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-color: #93c5fd;
+    }
+
+    .status-select.status--booked {
+      background-color: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+
+    .status-select.status--next-time {
+      background-color: #f3f4f6;
+      color: #6b7280;
+      border-color: #d1d5db;
     }
 
     /* Card Meta */
@@ -310,7 +341,7 @@
           "duration": "3 hours",
           "notes": "Morning slot recommended for calmer waters. Book 2 days ahead.",
           "link": "https://example.com/snorkeling-tour",
-          "status": "must-visit"
+          "status": "interested"
         },
         {
           "name": "Old Town Walking Tour",
@@ -342,7 +373,7 @@
           "cuisine": "Italian",
           "notes": "Homemade pasta is excellent. Reservations required on weekends.",
           "link": "https://example.com/la-trattoria",
-          "status": "must-visit"
+          "status": "interested"
         },
         {
           "name": "The Fish Market",
@@ -362,10 +393,36 @@
           "cuisine": "Brunch & Coffee",
           "notes": "Great for breakfast. Avocado toast and fresh juices. Opens at 7am.",
           "link": "https://example.com/sunrise-cafe",
-          "status": "must-visit"
+          "status": "interested"
         }
       ]
     };
+
+    const STATUSES = ["interested", "booked", "next-time"];
+    const STATUS_LABELS = { "interested": "Interested", "booked": "Booked", "next-time": "Next time" };
+
+    // Load saved statuses from localStorage
+    function loadSavedStatuses() {
+      const saved = localStorage.getItem("tripStatuses");
+      if (!saved) return;
+      const savedData = JSON.parse(saved);
+      for (const category in savedData) {
+        if (!tripData[category]) continue;
+        for (const name in savedData[category]) {
+          const item = tripData[category].find((i) => i.name === name);
+          if (item) item.status = savedData[category][name];
+        }
+      }
+    }
+
+    function saveStatus(category, name, status) {
+      const saved = JSON.parse(localStorage.getItem("tripStatuses") || "{}");
+      if (!saved[category]) saved[category] = {};
+      saved[category][name] = status;
+      localStorage.setItem("tripStatuses", JSON.stringify(saved));
+    }
+
+    loadSavedStatuses();
 
     let currentTab = "hotels";
 
@@ -388,6 +445,20 @@
     // Status filter
     statusFilter.addEventListener("change", renderCards);
 
+    // Handle status change via event delegation
+    cardContainer.addEventListener("change", (e) => {
+      if (!e.target.classList.contains("status-select")) return;
+      const name = e.target.dataset.name;
+      const newStatus = e.target.value;
+      const item = tripData[currentTab].find((i) => i.name === name);
+      if (item) {
+        item.status = newStatus;
+        saveStatus(currentTab, name, newStatus);
+        updateFilterOptions();
+        renderCards();
+      }
+    });
+
     function updateFilterOptions() {
       const items = tripData[currentTab] || [];
       const statuses = [...new Set(items.map((item) => item.status))];
@@ -396,7 +467,7 @@
       statuses.forEach((s) => {
         const option = document.createElement("option");
         option.value = s;
-        option.textContent = s.charAt(0).toUpperCase() + s.slice(1).replace("-", " ");
+        option.textContent = STATUS_LABELS[s] || s;
         statusFilter.appendChild(option);
       });
     }
@@ -417,6 +488,13 @@
       cardContainer.innerHTML = items.map((item) => buildCard(item)).join("");
     }
 
+    function buildStatusSelect(item) {
+      const options = STATUSES.map((s) =>
+        `<option value="${s}"${s === item.status ? " selected" : ""}>${STATUS_LABELS[s]}</option>`
+      ).join("");
+      return `<select class="status-select status--${escapeHtml(item.status)}" data-name="${escapeHtml(item.name)}">${options}</select>`;
+    }
+
     function buildCard(item) {
       const meta = buildMeta(item);
       const details = buildDetails(item);
@@ -427,7 +505,7 @@
           <div class="card-body">
             <div class="card-header">
               <h3>${escapeHtml(item.name)}</h3>
-              <span class="status status--${escapeHtml(item.status)}">${escapeHtml(item.status.replace("-", " "))}</span>
+              ${buildStatusSelect(item)}
             </div>
             <div class="card-meta">
               <span class="rating">\u2605 ${item.rating}</span>
