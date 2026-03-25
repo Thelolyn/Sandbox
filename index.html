@@ -4,7 +4,247 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Holiday Trip Planner</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0891b2, #0e7490);
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    header .subtitle {
+      opacity: 0.85;
+      margin-top: 0.25rem;
+      font-size: 1.1rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: white;
+      border-bottom: 2px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 0.85rem 0.5rem;
+      border: none;
+      background: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      border-bottom: 3px solid transparent;
+      text-align: center;
+    }
+
+    .tab:hover {
+      color: #0891b2;
+    }
+
+    .tab.active {
+      color: #0891b2;
+      border-bottom-color: #0891b2;
+    }
+
+    /* Controls */
+    .controls {
+      max-width: 1200px;
+      margin: 1.25rem auto 0;
+      padding: 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .controls label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    #status-filter {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #d4d4d4;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      background: white;
+      cursor: pointer;
+    }
+
+    /* Card Grid */
+    #card-container {
+      max-width: 1200px;
+      margin: 1.25rem auto;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+      gap: 1.25rem;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* Status Badges */
+    .status {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: capitalize;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .status--booked {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status--interested {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .status--must-visit {
+      background: #ffedd5;
+      color: #9a3412;
+    }
+
+    .status--visited {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    /* Card Meta */
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .card-meta .rating {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    .card-detail {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.4rem;
+    }
+
+    .notes {
+      font-size: 0.9rem;
+      color: #444;
+      margin-bottom: 0.75rem;
+    }
+
+    .card a {
+      color: #0891b2;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .card a:hover {
+      text-decoration: underline;
+    }
+
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #999;
+      font-size: 1.1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        padding: 1.25rem 1rem;
+      }
+
+      header h1 {
+        font-size: 1.4rem;
+      }
+
+      header .subtitle {
+        font-size: 0.95rem;
+      }
+
+      .tab {
+        padding: 0.7rem 0.25rem;
+        font-size: 0.85rem;
+      }
+
+      .card img {
+        height: 150px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -27,6 +267,204 @@
 
   <main id="card-container"></main>
 
-  <script src="app.js"></script>
+  <script>
+    const tripData = {
+      "hotels": [
+        {
+          "name": "Seaside Paradise Resort",
+          "image": "https://placehold.co/400x250/0891b2/white?text=Seaside+Resort",
+          "rating": 4.7,
+          "pricePerNight": "$180",
+          "location": "Beachfront, 5 min walk to town center",
+          "notes": "Includes breakfast buffet and pool access. Free cancellation until 3 days before.",
+          "link": "https://example.com/seaside-resort",
+          "status": "booked"
+        },
+        {
+          "name": "Mountain View Lodge",
+          "image": "https://placehold.co/400x250/065f46/white?text=Mountain+Lodge",
+          "rating": 4.3,
+          "pricePerNight": "$95",
+          "location": "Hillside, 15 min drive to beach",
+          "notes": "Quiet area, great views. No breakfast but kitchen available.",
+          "link": "https://example.com/mountain-lodge",
+          "status": "interested"
+        },
+        {
+          "name": "Downtown Boutique Hotel",
+          "image": "https://placehold.co/400x250/7c3aed/white?text=Boutique+Hotel",
+          "rating": 4.5,
+          "pricePerNight": "$150",
+          "location": "City center, walking distance to everything",
+          "notes": "Stylish rooms, rooftop bar. Can be noisy at night.",
+          "link": "https://example.com/boutique-hotel",
+          "status": "interested"
+        }
+      ],
+      "activities": [
+        {
+          "name": "Snorkeling Tour",
+          "image": "https://placehold.co/400x250/0284c7/white?text=Snorkeling",
+          "rating": 4.8,
+          "price": "$45/person",
+          "duration": "3 hours",
+          "notes": "Morning slot recommended for calmer waters. Book 2 days ahead.",
+          "link": "https://example.com/snorkeling-tour",
+          "status": "must-visit"
+        },
+        {
+          "name": "Old Town Walking Tour",
+          "image": "https://placehold.co/400x250/b45309/white?text=Walking+Tour",
+          "rating": 4.6,
+          "price": "$20/person",
+          "duration": "2 hours",
+          "notes": "Runs daily at 10am and 4pm. Covers history and architecture.",
+          "link": "https://example.com/walking-tour",
+          "status": "interested"
+        },
+        {
+          "name": "Sunset Sailing Cruise",
+          "image": "https://placehold.co/400x250/e11d48/white?text=Sunset+Cruise",
+          "rating": 4.9,
+          "price": "$75/person",
+          "duration": "2.5 hours",
+          "notes": "Includes drinks and snacks. Departs 5:30pm. Limited spots.",
+          "link": "https://example.com/sunset-cruise",
+          "status": "booked"
+        }
+      ],
+      "restaurants": [
+        {
+          "name": "La Trattoria",
+          "image": "https://placehold.co/400x250/dc2626/white?text=La+Trattoria",
+          "rating": 4.5,
+          "priceRange": "$$",
+          "cuisine": "Italian",
+          "notes": "Homemade pasta is excellent. Reservations required on weekends.",
+          "link": "https://example.com/la-trattoria",
+          "status": "must-visit"
+        },
+        {
+          "name": "The Fish Market",
+          "image": "https://placehold.co/400x250/0369a1/white?text=Fish+Market",
+          "rating": 4.7,
+          "priceRange": "$$$",
+          "cuisine": "Seafood",
+          "notes": "Freshest catch in town. Try the grilled octopus. Outdoor seating available.",
+          "link": "https://example.com/fish-market",
+          "status": "interested"
+        },
+        {
+          "name": "Sunrise Cafe",
+          "image": "https://placehold.co/400x250/ea580c/white?text=Sunrise+Cafe",
+          "rating": 4.2,
+          "priceRange": "$",
+          "cuisine": "Brunch & Coffee",
+          "notes": "Great for breakfast. Avocado toast and fresh juices. Opens at 7am.",
+          "link": "https://example.com/sunrise-cafe",
+          "status": "must-visit"
+        }
+      ]
+    };
+
+    let currentTab = "hotels";
+
+    const cardContainer = document.getElementById("card-container");
+    const statusFilter = document.getElementById("status-filter");
+    const tabs = document.querySelectorAll(".tab");
+
+    // Tab switching
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        currentTab = tab.dataset.tab;
+        statusFilter.value = "all";
+        updateFilterOptions();
+        renderCards();
+      });
+    });
+
+    // Status filter
+    statusFilter.addEventListener("change", renderCards);
+
+    function updateFilterOptions() {
+      const items = tripData[currentTab] || [];
+      const statuses = [...new Set(items.map((item) => item.status))];
+
+      statusFilter.innerHTML = '<option value="all">All</option>';
+      statuses.forEach((s) => {
+        const option = document.createElement("option");
+        option.value = s;
+        option.textContent = s.charAt(0).toUpperCase() + s.slice(1).replace("-", " ");
+        statusFilter.appendChild(option);
+      });
+    }
+
+    function renderCards() {
+      const filter = statusFilter.value;
+      let items = tripData[currentTab] || [];
+
+      if (filter !== "all") {
+        items = items.filter((item) => item.status === filter);
+      }
+
+      if (items.length === 0) {
+        cardContainer.innerHTML = '<p class="empty-state">No items to show.</p>';
+        return;
+      }
+
+      cardContainer.innerHTML = items.map((item) => buildCard(item)).join("");
+    }
+
+    function buildCard(item) {
+      const meta = buildMeta(item);
+      const details = buildDetails(item);
+
+      return `
+        <div class="card">
+          <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" loading="lazy">
+          <div class="card-body">
+            <div class="card-header">
+              <h3>${escapeHtml(item.name)}</h3>
+              <span class="status status--${escapeHtml(item.status)}">${escapeHtml(item.status.replace("-", " "))}</span>
+            </div>
+            <div class="card-meta">
+              <span class="rating">\u2605 ${item.rating}</span>
+              ${meta}
+            </div>
+            ${details}
+            <p class="notes">${escapeHtml(item.notes)}</p>
+            <a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">More info \u2192</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildMeta(item) {
+      if (item.pricePerNight) return `<span>${escapeHtml(item.pricePerNight)}/night</span>`;
+      if (item.price) return `<span>${escapeHtml(item.price)}</span>`;
+      if (item.priceRange) return `<span>${escapeHtml(item.priceRange)}</span>`;
+      return "";
+    }
+
+    function buildDetails(item) {
+      const parts = [];
+      if (item.location) parts.push(`<p class="card-detail">\uD83D\uDCCD ${escapeHtml(item.location)}</p>`);
+      if (item.duration) parts.push(`<p class="card-detail">\u23F1 ${escapeHtml(item.duration)}</p>`);
+      if (item.cuisine) parts.push(`<p class="card-detail">\uD83C\uDF7D\uFE0F ${escapeHtml(item.cuisine)}</p>`);
+      return parts.join("");
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = String(str);
+      return div.innerHTML;
+    }
+
+    // Initialize
+    updateFilterOptions();
+    renderCards();
+  </script>
 </body>
 </html>
